@@ -10,67 +10,7 @@
     <title>Order food & drinks</title>
 </head>
 <body>
-<?php
-// define variables and set to empty values
-$emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = "";
-$email = $street = $streetnumber = $city = $zipcode = "";
 
-// validating email format
-$email = test_input($_POST["email"]);
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $emailErr = "Invalid email format";
-}
-
-// only numbers
-if (!preg_match("/^[0-9]+$/",$streetnumber)) {
-    $streetnumberErr = "The street number should be only numbers";
-}
-
-if (!preg_match("/^[0-9]+$/",$zipcode)) {
-    $zipcodeErr = "The street number should be only numbers";
-}
-
-// required fields
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-
-    if (empty($_POST["email"])) {
-        $emailErr = "Email is required";
-    } else {
-        $email = test_input($_POST["email"]);
-    }
-
-    if (empty($_POST["street"])) {
-        $streetErr = "Street is required";
-    } else {
-        $street = test_input($_POST["street"]);
-    }
-
-    if (empty($_POST["streetnumber"])) {
-        $streetnumberErr = "Street number is required";
-    } else {
-        $streetnumber = test_input($_POST["streetnumber"]);
-    }
-
-    if (empty($_POST["city"])) {
-        $cityErr = "City is required";
-    } else {
-        $city = test_input($_POST["city"]);
-    }
-
-    if (empty($_POST["zipcode"])) {
-        $zipcodeErr = "Zipcode is required";
-    } else {
-        $zipcode = test_input($_POST["zipcode"]);
-    }
-}
-
-function test_input($data) {
-    $data = trim($data);
-    $data = stripslashes($data);
-    $data = htmlspecialchars($data);
-    return $data;
-}
-?>
 <div class="container">
     <h1>Order food in restaurant "the Personal Ham Processors"</h1>
     <nav>
@@ -88,7 +28,9 @@ function test_input($data) {
             <div class="form-group col-md-6">
                 <label for="email">E-mail:</label>
                 <span class="error">* <?php echo $emailErr;?></span>
-                <input type="text" id="email" name="email" class="form-control"/>
+                <input type="text" id="email" name="email" class="form-control" value="<?php if(isset($_SESSION['email'])) {
+                    echo $_SESSION['email'];
+                } ?>"/>
             </div>
             <div></div>
         </div>
@@ -100,24 +42,32 @@ function test_input($data) {
                 <div class="form-group col-md-6">
                     <label for="street">Street:</label>
                     <span class="error">* <?php echo $streetErr;?></span>
-                    <input type="text" name="street" id="street" class="form-control">
+                    <input type="text" name="street" id="street" class="form-control" value="<?php if(isset($_SESSION['street'])) {
+                        echo $_SESSION['street'];
+                    } ?>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="streetnumber">Street number:</label>
                     <span class="error">* <?php echo $streetnumberErr;?></span>
-                    <input type="text" id="streetnumber" name="streetnumber" class="form-control">
+                    <input type="text" id="streetnumber" name="streetnumber" class="form-control" value="<?php if(isset($_SESSION['streetnumber'])) {
+                        echo $_SESSION['streetnumber'];
+                    } ?>">
                 </div>
             </div>
             <div class="form-row">
                 <div class="form-group col-md-6">
                     <label for="city">City:</label>
                     <span class="error">* <?php echo $cityErr;?></span>
-                    <input type="text" id="city" name="city" class="form-control">
+                    <input type="text" id="city" name="city" class="form-control" value="<?php if(isset($_SESSION['city'])) {
+                        echo $_SESSION['city'];
+                    } ?>">
                 </div>
                 <div class="form-group col-md-6">
                     <label for="zipcode">Zipcode</label>
                     <span class="error">* <?php echo $zipcodeErr;?></span>
-                    <input type="text" id="zipcode" name="zipcode" class="form-control">
+                    <input type="text" id="zipcode" name="zipcode" class="form-control" value="<?php if(isset($_SESSION['zipcode'])) {
+                        echo $_SESSION['zipcode'];
+                    } ?>">
                 </div>
             </div>
         </fieldset>
