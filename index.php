@@ -17,7 +17,8 @@ function whatIsHappening() {
 }
 
 //your products with their price.
-$products = [
+
+$food = [
     ['name' => 'Club Ham', 'price' => 3.20],
     ['name' => 'Club Cheese', 'price' => 3],
     ['name' => 'Club Cheese & Ham', 'price' => 4],
@@ -25,33 +26,27 @@ $products = [
     ['name' => 'Club Salmon', 'price' => 5]
 ];
 
-$products = [
+$drinks = [
     ['name' => 'Cola', 'price' => 2],
     ['name' => 'Fanta', 'price' => 2],
     ['name' => 'Sprite', 'price' => 2],
     ['name' => 'Ice-tea', 'price' => 3],
 ];
-
+// 2 different $products arrays link at the top of the page you click
+if (isset($_GET['food'])) {
+    if ($_GET['food']) {
+        $products = $food;
+    } else {
+        $products = $drinks;
+    }
+}else {
+    $products = $food;
+}
 $totalValue = 0;
 
 // define variables and set to empty values
 $emailErr = $streetErr = $streetnumberErr = $cityErr = $zipcodeErr = "";
 $email = $street = $streetnumber = $city = $zipcode = "";
-
-// validating email format
-$email = test_input($_POST["email"]);
-if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-    $emailErr = "Invalid email format";
-}
-
-// only numbers
-if (!preg_match("/^[0-9]+$/",$streetnumber)) {
-    $streetnumberErr = "The street number should be only numbers";
-}
-
-if (!preg_match("/^[0-9]+$/",$zipcode)) {
-    $zipcodeErr = "The zipcode number should be only numbers";
-}
 
 // required fields
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -60,6 +55,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $emailErr = "Email is required";
     } else {
         $email = test_input($_POST["email"]);
+    }
+
+    // validating email format
+    $email = test_input($_POST["email"]);
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        $emailErr = "Invalid email format";
     }
 
     if (empty($_POST["street"])) {
@@ -74,6 +75,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $streetnumber = test_input($_POST["streetnumber"]);
     }
 
+    // only numbers
+    if (!preg_match("/^[0-9]+$/",$streetnumber)) {
+        $streetnumberErr = "The street number should be only numbers";
+    }
     if (empty($_POST["city"])) {
         $cityErr = "City is required";
     } else {
@@ -85,7 +90,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         $zipcode = test_input($_POST["zipcode"]);
     }
+
+    //only numbers
+    if (!preg_match("/^[0-9]+$/",$zipcode)) {
+        $zipcodeErr = "The zipcode should be only numbers";
+    }
 }
+
 
 function test_input($data) {
     return $data;
@@ -107,16 +118,14 @@ if (!empty($_POST["city"])) {
 if (!empty($_POST["zipcode"])) {
     $_SESSION["zipcode"] = $_POST["zipcode"];
 }
-//used the isset in the form-view value
-/*if (isset($_SESSION['streetnumber'])) {
-    echo $_SESSION['streetnumber'];
+
+//Calculate the delivery time
+/*if (isset()){
+    ;
+} else {
+    ;
 }*/
 
-// Order food or drinks by link clicked
-
 whatIsHappening();
-
-
-echo "Session variables are set.";
 
 require 'form-view.php';
