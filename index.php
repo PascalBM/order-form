@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 //we are going to use session variables so we need to enable sessions
 session_start();
-
+$total = 0;
 //set session variables
 if (!empty($_POST["email"])) {
     $_SESSION["email"] = $_POST["email"];
@@ -142,8 +142,21 @@ function test_input($data) {
     return $data;
 }
 
-
-
 whatIsHappening();
 
+//cookies
+if(isset($_POST['products'])){
+    foreach(array_keys($_POST['products']) as $key) {
+        $total += $products[$key]['price'];
+    };
+    if(isset($_POST['express_delivery'])) {
+        $total += $_POST['express_delivery'];
+    };
+    $total = $total + $_COOKIE['total'];
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        setcookie('total', strval($total), time() + 30 * 24 * 60 * 60);
+    }
+//mail('mkno-@hotmail.com', 'My order', 'Thank you for the order');
+
+};
 require 'form-view.php';
