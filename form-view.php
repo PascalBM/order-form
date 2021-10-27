@@ -23,6 +23,24 @@
             </li>
         </ul>
     </nav>
+    <?php
+    // code to show the user if the form is filled correctly and to alert the delivery time
+    if ($check == false){
+        //used bootstraps alert class: https://getbootstrap.com/docs/4.0/components/alerts/
+        echo "<div class='alert alert-danger' role='alert'>
+        'error'
+    </div>";
+    }
+    if((isset($deliverytime))){
+        if ($check == true){
+            //used bootstraps alert class: https://getbootstrap.com/docs/4.0/components/alerts/
+            echo "<div class='alert alert-secondary' role='alert'>
+        $deliverytime
+    </div>";
+        }
+    }
+    ?>
+
     <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
         <div class="form-row">
             <div class="form-group col-md-6">
